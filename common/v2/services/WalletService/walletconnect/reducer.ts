@@ -1,24 +1,14 @@
 import { ValuesType } from 'utility-types';
-import { TAddress } from 'v2/types';
 
-export type TActionError = ValuesType<typeof WcReducer.errorCodes>;
+import { TActionError, WalletConnectState } from './types';
+
 interface TAction {
   type: ValuesType<typeof WcReducer.actionTypes>;
   payload?: any;
   error?: { code: TActionError };
 }
-interface State {
-  detectedAddress?: TAddress;
-  detectedChainId?: number;
-  uri?: string;
-  errors?: TActionError[];
-  isConnected: boolean;
-  isPendingSign: boolean;
-  promptConnectionRetry: boolean;
-  promptSignRetry: boolean;
-}
 
-export const initialState: State = {
+export const initialState: WalletConnectState = {
   isConnected: false,
   isPendingSign: false,
   promptSignRetry: false,
@@ -26,7 +16,10 @@ export const initialState: State = {
   errors: []
 };
 
-export function WcReducer(state: State, { type, payload, error }: TAction): State {
+export function WcReducer(
+  state: WalletConnectState,
+  { type, payload, error }: TAction
+): WalletConnectState {
   switch (type) {
     case WcReducer.actionTypes.INIT_SUCCESS: {
       const { uri } = payload;
